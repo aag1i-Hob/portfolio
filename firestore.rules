@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Projects: public read, authenticated write
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Skills: public read, authenticated write
+    match /skills/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Messages: anyone can create, only admin can read/update/delete
+    match /messages/{docId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Config (profile): public read, authenticated write
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
